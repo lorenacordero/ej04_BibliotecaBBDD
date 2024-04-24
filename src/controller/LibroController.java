@@ -23,5 +23,14 @@ public class LibroController {
 		LibroDao biblioteca=new LibroDao(cn);
 		return biblioteca.getConsultaLibros("select * from libros");
 	}
+	
+	public boolean agregarLibro(String titulo, String autor, String editorial, String isbn) throws IsbnException, CamposVaciosException, SQLException {
+		boolean agregado=false;
+		Libro libro=new Libro(titulo, autor, editorial, isbn);
+		LibroDao ld= new LibroDao(cn);
+		ld.agregarLibro(libro);
+		agregado=true;
+		return agregado;
+	}
 
 }

@@ -38,7 +38,6 @@ public class LibroDao {
 			String titulo=rs.getString("titulo");
 			String autor=rs.getString("autor");
 			String editorial=rs.getString("editorial");
-			String isbn=rs.getString("isbn");
 			boolean prestado=rs.getBoolean("prestado");
 			LocalDate fechaPrestamo=null;
 			if(rs.getDate("fechaPrestamo")!=null)
@@ -46,12 +45,44 @@ public class LibroDao {
 			LocalDate fechaDevolucion=null;
 			if(rs.getDate("fechaDevolucion")!=null)
 				fechaDevolucion=rs.getDate("fechaDevolucion").toLocalDate();
+			String isbn=rs.getString("isbn");
 			LocalDateTime fechaAlta=rs.getTimestamp("fechaAlta").toLocalDateTime();
 			libro=new Libro(id,titulo,autor,editorial,isbn,prestado,fechaPrestamo,fechaDevolucion,fechaAlta);
 			libros.add(libro);
 			libro=null;
 		}
 		return libros;
+	}
+	
+	
+	public boolean agregarLibro(Libro libro) throws SQLException {
+		boolean agregado=false;
+		String titulo=libro.getTitulo();
+		String autor=libro.getAutor();
+		String editorial=libro.getEditorial();
+		String isbn=libro.getIsbn();
+		boolean prestado=libro.isPrestado();
+		LocalDateTime fechaAlta=libro.getFechaAlta();
+		
+		String sql="insert into libros values (?,?,?,?,?,?,?,?,?)";
+		PreparedStatement pst=cn.prepareStatement(sql);
+		
+		pst.setInt(1, 0);
+		pst.setString(2, titulo);
+		pst.setString(3, autor);
+		pst.setString(4, editorial);
+		pst.setBoolean(5, prestado);
+		pst.setDate(6, null);
+		pst.setDate(7, null);
+		pst.setString(8, isbn);
+		Timestamp ts=Timestamp.valueOf(fechaAlta);
+		pst.setTimestamp(9, ts);
+		
+		pst.executeUpdate();
+		pst=null;
+		
+		agregado=true;
+		return agregado;
 	}
 
 }

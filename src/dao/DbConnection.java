@@ -33,7 +33,7 @@ public class DbConnection {
 	public void disconnect() {
 		if(conn!=null) {
 			try {
-				System.out.println("Closing database: [" +conn+ "] OK");
+				System.err.println("Closing database: [" +conn+ "] OK");
 				conn.close();
 				System.err.println("DB disconnect.");
 			} catch (SQLException e) {

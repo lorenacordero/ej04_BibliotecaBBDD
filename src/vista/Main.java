@@ -22,29 +22,45 @@ public class Main {
 		DbConnection db=null;
 		Connection cn=null;
 		
-//		try {
-//			db=new DbConnection();
-//			cn=db.getConnection();
-//			System.err.println("DB connect...");
-//			db.disconnect();
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			System.err.println("Error en la conexión....");
-//		}
-		
 		try {
 			db=new DbConnection();
 			cn=db.getConnection();
+			System.err.println("DB connect...");
 			LibroController librocontroller= new LibroController(cn);
+			
+			//********************************************************************
+			//leemos la base de datos
 			List<Libro> libros=librocontroller.getLibros();
-			for(Libro l: libros)
-				System.out.println(l);
+			mostrarLibros(libros);
+			//********************************************************************
+			
+			System.out.println();
+			System.out.println("AGREGAMOS UN LIBRO");
+			
+			//********************************************************************
+			//agregamos un libro y comprobamos que se ha agregado correctamente
+			String titulo="Nada", autor="Carmen Laforet", editorial="Santillana",isbn="978-0-306-40615-7";
+			boolean agregado=librocontroller.agregarLibro(titulo, autor, editorial, isbn);
+			if(agregado) {
+				libros=librocontroller.getLibros();
+				mostrarLibros(libros);
+			}
+			//********************************************************************
+			
+			db.disconnect();
 		} catch (SQLException | IsbnException | CamposVaciosException e) {
 			// TODO Auto-generated catch block
 			System.err.println(e.getMessage());
 		}
 		
 	
+		
+	}
+
+	private static void mostrarLibros(List<Libro> libros) {
+		// TODO Auto-generated method stub
+		for(Libro l: libros)
+			System.out.println(l);
 		
 	}
 
