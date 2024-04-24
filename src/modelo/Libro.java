@@ -1,13 +1,17 @@
 package modelo;
 
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import excepciones.CamposVaciosException;
 import excepciones.IsbnException;
 
-public class Libro {
 
+
+public class Libro {
+	
 	private int idlibros;
 	private String titulo, autor, editorial, isbn;
 	private boolean prestado;
@@ -174,5 +178,11 @@ public class Libro {
 		 correcto=true;
 		 return correcto;
 		 }
+
+	
+	
+	
+	
+	
 
 }

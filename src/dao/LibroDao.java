@@ -8,12 +8,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.mysql.cj.protocol.Resultset;
 import com.mysql.cj.xdevapi.PreparableStatement;
 
+import excepciones.CamposVaciosException;
+import excepciones.IsbnException;
 import modelo.Libro;
 
 public class LibroDao {
@@ -25,7 +28,7 @@ public class LibroDao {
 		this.cn=cn;
 	}
 	
-	public List<Libro> getConsultaLibros(String sql) throws SQLException{
+	public List<Libro> getConsultaLibros(String sql) throws SQLException, IsbnException, CamposVaciosException{
 		List<Libro> libros=new ArrayList<Libro>();
 		PreparedStatement pst= cn.prepareStatement(sql);
 		ResultSet rs= pst.executeQuery();
@@ -37,9 +40,9 @@ public class LibroDao {
 			String editorial=rs.getString("editorial");
 			String isbn=rs.getString("isbn");
 			boolean prestado=rs.getBoolean("prestado");
-			Date fechaPrestamo=rs.getDate("fechaPrestamo");
-			Date fechaDevolucion=rs.getDate("fechaDevolucion");
-			Timestamp fechaAlta=rs.getTimestamp("fechaAlta");
+			LocalDate fechaPrestamo=rs.getDate("fechaPrestamo").toLocalDate();
+			LocalDate fechaDevolucion=rs.getDate("fechaDevolucion").toLocalDate();
+			LocalDateTime fechaAlta=rs.getTimestamp("fechaAlta").toLocalDateTime();
 			libro=new Libro(id,titulo,autor,editorial,isbn,prestado,fechaPrestamo,fechaDevolucion,fechaAlta);
 			libros.add(libro);
 			libro=null;

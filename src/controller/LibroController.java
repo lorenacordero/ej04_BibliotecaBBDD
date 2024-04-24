@@ -5,6 +5,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 import dao.LibroDao;
+import excepciones.CamposVaciosException;
+import excepciones.IsbnException;
 import modelo.Libro;
 
 public class LibroController {
@@ -17,7 +19,7 @@ public class LibroController {
 		this.cn=cn;
 	}
 	
-	public List<Libro> getLibros() throws SQLException{
+	public List<Libro> getLibros() throws SQLException, IsbnException, CamposVaciosException{
 		LibroDao biblioteca=new LibroDao(cn);
 		return biblioteca.getConsultaLibros("select * from libros");
 	}
