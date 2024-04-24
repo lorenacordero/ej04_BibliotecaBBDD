@@ -40,8 +40,12 @@ public class LibroDao {
 			String editorial=rs.getString("editorial");
 			String isbn=rs.getString("isbn");
 			boolean prestado=rs.getBoolean("prestado");
-			LocalDate fechaPrestamo=rs.getDate("fechaPrestamo").toLocalDate();
-			LocalDate fechaDevolucion=rs.getDate("fechaDevolucion").toLocalDate();
+			LocalDate fechaPrestamo=null;
+			if(rs.getDate("fechaPrestamo")!=null)
+				fechaPrestamo=rs.getDate("fechaPrestamo").toLocalDate();
+			LocalDate fechaDevolucion=null;
+			if(rs.getDate("fechaDevolucion")!=null)
+				fechaDevolucion=rs.getDate("fechaDevolucion").toLocalDate();
 			LocalDateTime fechaAlta=rs.getTimestamp("fechaAlta").toLocalDateTime();
 			libro=new Libro(id,titulo,autor,editorial,isbn,prestado,fechaPrestamo,fechaDevolucion,fechaAlta);
 			libros.add(libro);
