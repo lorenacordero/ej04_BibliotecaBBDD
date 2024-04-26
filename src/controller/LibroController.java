@@ -32,5 +32,22 @@ public class LibroController {
 		agregado=true;
 		return agregado;
 	}
+	
+	public int borrar(String sql) throws SQLException {
+		int rows=0;
+		LibroDao libro= new LibroDao(cn);
+		rows=libro.borrar(sql);
+		return rows;
+	}
+	
+	public int prestar(String sql, int id) throws SQLException, IsbnException, CamposVaciosException{
+		int row=0;
+		LibroDao libro= new LibroDao(cn);
+		List<Libro> lib=libro.getConsultaLibros(sql);
+		if(lib.size()!=0 && !lib.get(0).isPrestado()) {
+			row=libro.prestar(id);
+		}
+		return row;
+	}
 
 }

@@ -84,5 +84,29 @@ public class LibroDao {
 		agregado=true;
 		return agregado;
 	}
+	
+	
+	public int borrar(String sql) throws SQLException {
+		int rows=0;
+		PreparedStatement pst=cn.prepareStatement(sql);
+		rows=pst.executeUpdate();
+		return rows;
+	}
+	
+	public int prestar(int id) throws SQLException {
+		int row=0;
+		String sql="Update libros Set prestado=? ,fechaPrestamo=?,fechaDevolucion=? Where idlibros=?";
+		PreparedStatement pst=cn.prepareStatement(sql);
+		LocalDate fechaPrest=LocalDate.now();
+		LocalDate fechaDev=fechaPrest.plusDays(10);
+		Date fechaPrestamo=Date.valueOf(fechaPrest);
+		Date fechaDevolucion=Date.valueOf(fechaDev);
+		pst.setBoolean(1, true);
+		pst.setDate(2, fechaPrestamo);
+		pst.setDate(3, fechaDevolucion);
+		pst.setInt(4, id);
+		row=pst.executeUpdate();
+		return row;
+	}
 
 }

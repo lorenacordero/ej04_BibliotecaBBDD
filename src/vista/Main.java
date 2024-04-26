@@ -25,35 +25,91 @@ public class Main {
 		try {
 			db=new DbConnection();
 			cn=db.getConnection();
-			System.err.println("DB connect...");
-			LibroController librocontroller= new LibroController(cn);
 			
-			//********************************************************************
+
+			LibroController librocontroller= new LibroController(cn);
 			//leemos la base de datos
 			List<Libro> libros=librocontroller.getLibros();
 			mostrarLibros(libros);
+			
+			
+			librocontroller=null;
+			db.disconnect();db=null;
 			//********************************************************************
 			
 			System.out.println();
-			System.out.println("AGREGAMOS UN LIBRO");
+
 			
 			//********************************************************************
+//			System.out.println("AGREGAMOS UN LIBRO");
 			//agregamos un libro y comprobamos que se ha agregado correctamente
-			String titulo="Nada", autor="Carmen Laforet", editorial="Santillana",isbn="978-0-306-40615-7";
-			boolean agregado=librocontroller.agregarLibro(titulo, autor, editorial, isbn);
-			if(agregado) {
+//			db=new DbConnection();
+//			cn=db.getConnection();
+//			librocontroller=new LibroController(cn);
+//			
+//			
+//			String titulo="Nada", autor="Carmen Laforet", editorial="Santillana",isbn="978-0-306-40615-7";
+//			boolean agregado=librocontroller.agregarLibro(titulo, autor, editorial, isbn);
+//			if(agregado) {
+//				libros=librocontroller.getLibros();
+//				mostrarLibros(libros);
+//			}
+//			
+//			
+//			librocontroller=null;
+//			db.disconnect();db=null;
+			//********************************************************************
+//			System.out.println();
+			
+			//********************************************************************
+			//borramos un libro
+			db=new DbConnection();
+			cn=db.getConnection();
+			librocontroller=new LibroController(cn);
+			
+			
+			String campo="idlibros", cadenaBusqueda="47";
+			String sql="delete from libros where "+campo+" = '"+cadenaBusqueda+"'";
+			int rows=librocontroller.borrar(sql);
+			if(rows>0) {
+				System.out.println("Se han borrado "+rows+" libros");
 				libros=librocontroller.getLibros();
 				mostrarLibros(libros);
 			}
-			//********************************************************************
+			else
+				System.out.println("No se ha eliminado ningún libro");
 			
-			db.disconnect();
+			
+			librocontroller=null;
+			db.disconnect();db=null;
+			//********************************************************************
+			System.out.println();
+			//********************************************************************
+			db=new DbConnection();
+			cn=db.getConnection();
+			librocontroller=new LibroController(cn);
+			
+			
+			int id=1;
+			sql="select * from libros where "+campo+" = '"+id+"'";
+			
+			int prestados=librocontroller.prestar(sql, id);
+			System.out.println("Se han prestado "+prestados+" libros");
+			libros=librocontroller.getLibros();
+			mostrarLibros(libros);
+			
+			librocontroller=null;
+			db.disconnect();db=null;
+			
+			
+					
+			
 		} catch (SQLException | IsbnException | CamposVaciosException e) {
 			// TODO Auto-generated catch block
 			System.err.println(e.getMessage());
 		}
 		
-	
+		
 		
 	}
 
